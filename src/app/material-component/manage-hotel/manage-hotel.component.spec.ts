@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageCommentComponent } from './manage-comment.component';
+import { ManageHotelComponent } from './manage-hotel.component';
 
-describe('ManageCommentComponent', () => {
-  let component: ManageCommentComponent;
-  let fixture: ComponentFixture<ManageCommentComponent>;
+describe('ManageHotelComponent', () => {
+  let component: ManageHotelComponent;
+  let fixture: ComponentFixture<ManageHotelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ManageCommentComponent ]
+      declarations: [ ManageHotelComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageCommentComponent);
+    fixture = TestBed.createComponent(ManageHotelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

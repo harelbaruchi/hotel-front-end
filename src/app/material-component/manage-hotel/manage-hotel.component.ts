@@ -2,36 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { HotelService } from 'src/app/services/hotel.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-import { ProjectComponent } from '../dialog/project/project.component';
+import { HotelComponent } from '../dialog/hotel/hotel.component';
+
 
 @Component({
-  selector: 'app-manage-project',
-  templateUrl: './manage-project.component.html',
-  styleUrls: ['./manage-project.component.scss']
+  selector: 'app-manage-hotel',
+  templateUrl: './manage-hotel.component.html',
+  styleUrls: ['./manage-hotel.component.scss']
 })
-export class ManageProjectComponent implements OnInit {
+export class ManageHotelComponent implements OnInit {
 
-  displayedColumns: string[]= ['name','address','endDate','status','image','edit'];
+  displayedColumns: string[] = ['name','address','image','edit'];
   dataSource: any;
   responseMessage: any;
 
-
-  constructor(
-    private projectService: ProjectService,
-     private dialog: MatDialog,
-      private snackbarService: SnackbarService,
-       private router: Router
-    ) { }
+  constructor( private hotelService: HotelService,
+    private dialog: MatDialog,
+    private snackbarService: SnackbarService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.tableData();
   }
 
   tableData(){
-    this.projectService.getProjects().subscribe((response: any)=>{
+    this.hotelService.getHotel().subscribe((response: any)=>{
       console.log(response);
       this.dataSource= new MatTableDataSource(response);
     },(error: any)=>{
@@ -55,11 +54,11 @@ export class ManageProjectComponent implements OnInit {
       action: 'Add'
     }
     dialogConfig.width="700px";
-    const dialogRef= this.dialog.open(ProjectComponent,dialogConfig);
+    const dialogRef= this.dialog.open(HotelComponent,dialogConfig);
     this.router.events.subscribe(()=>{
       dialogRef.close();
     });
-    const sub= dialogRef.componentInstance.onAddProject.subscribe((response)=>{
+    const sub= dialogRef.componentInstance.onAddHotel.subscribe((response)=>{
       this.tableData();
     })
   }
@@ -71,11 +70,11 @@ export class ManageProjectComponent implements OnInit {
       data: values
     }
     dialogConfig.width="700px";
-    const dialogRef= this.dialog.open(ProjectComponent,dialogConfig);
+    const dialogRef= this.dialog.open(HotelComponent,dialogConfig);
     this.router.events.subscribe(()=>{
       dialogRef.close();
     });
-    const sub= dialogRef.componentInstance.onEdditProject.subscribe((response)=>{
+    const sub= dialogRef.componentInstance.onEdditHotel.subscribe((response)=>{
       this.tableData();
     })
   }

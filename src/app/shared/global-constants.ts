@@ -14,5 +14,6 @@ export class GlobalConstants{
     //variable
     public static error: string="error";
 
+      
 
 }

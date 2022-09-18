@@ -7,9 +7,9 @@
         <div class="column">
             <div class="card">
                 <div class="container">
-                    <h2 class="title">Total Projects: </h2>
-                    <h1 class="title"> {{data?.project}} </h1>
-                    <p> <button class="button" [routerLink]="['/projects/project']">View Projects</button> </p>
+                    <h2 class="title">Total Hotels: </h2>
+                    <h1 class="title"> {{data?.hotel}} </h1>
+                    <p> <button class="button" [routerLink]="['/projects/hotel']">View Hotels</button> </p>
                 </div>
         
             </div>
@@ -19,9 +19,21 @@
     <div class="column">
         <div class="card">
             <div class="container">
-                <h2 class="title">Total comments: </h2>
-                <h1 class="title"> {{data?.comment}} </h1>
-                <p> <button class="button" [routerLink]="['/projects/comment']">View comments</button> </p>
+                <h2 class="title">Total Rooms: </h2>
+                <h1 class="title"> {{data?.room}} </h1>
+                <p> <button class="button" [routerLink]="['/projects/room']">View Rooms</button> </p>
+            </div>
+    
+        </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="column">
+        <div class="card">
+            <div class="container">
+                <h2 class="title">Total Reservations: </h2>
+                <h1 class="title"> {{data?.reservation}} </h1>
+                <p> <button class="button" [routerLink]="['/projects/comment']">View Reservations</button> </p>
             </div>
     
         </div>

@@ -3,25 +3,26 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { CommentService } from 'src/app/services/comment.service';
+import { RoomService } from 'src/app/services/room.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-import { CommentComponent } from '../dialog/comment/comment.component';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
+import { RoomComponent } from '../dialog/room/room.component';
 
 @Component({
-  selector: 'app-manage-comment',
-  templateUrl: './manage-comment.component.html',
-  styleUrls: ['./manage-comment.component.scss']
+  selector: 'app-manage-room',
+  templateUrl: './manage-room.component.html',
+  styleUrls: ['./manage-room.component.scss']
 })
-export class ManageCommentComponent implements OnInit {
-  displayedColumns: string[]= ['description','projectName',"timeCreated","edit"];
-  dataSource: any;
-  responseMessage: any;
+export class ManageRoomComponent implements OnInit {
+  displayedColumns: string[] = ['type','hotelName','availableCount', "edit"];
+  dataSource:any;
+  responseMessage:any;
 
 
-
-  constructor( private commentService: CommentService,
-    private dialog: MatDialog, private snackbarService: SnackbarService,
+  constructor(private roomService: RoomService,
+    private dialog: MatDialog,
+    private snackbarService: SnackbarService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -29,10 +30,10 @@ export class ManageCommentComponent implements OnInit {
   }
 
   tableData(){
-   this.commentService.getComment().subscribe((response: any)=>{
-    this.dataSource= new MatTableDataSource(response);
-   }, (error: any)=>{
-    console.log(error);
+    this.roomService.getRoom().subscribe((response: any)=>{
+      this.dataSource= new MatTableDataSource(response);
+    }, (error: any)=>{
+      console.log(error);
     if(error.error?.message){
       this.responseMessage= error.error?.message;
     }
@@ -40,7 +41,7 @@ export class ManageCommentComponent implements OnInit {
       this.responseMessage=GlobalConstants.genericError;
     }
     this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.error);
-   })
+    })
   }
 
   applyFilter(event: Event){
@@ -54,61 +55,60 @@ export class ManageCommentComponent implements OnInit {
       action: 'Add'
     }
     dialogConfig.width="700px";
-    const dialogRef= this.dialog.open(CommentComponent, dialogConfig);
+    const dialogRef= this.dialog.open(RoomComponent, dialogConfig);
     this.router.events.subscribe(()=>{
       dialogRef.close();
 
     })
-    const sub= dialogRef.componentInstance.onAddComment.subscribe((response)=>{
+    const sub= dialogRef.componentInstance.onAddRoom.subscribe((response)=>{
       this.tableData();
     })
   }
 
-  handleEditAction(values:any){
+  handleEditAction(values: any){
     const dialogConfig= new MatDialogConfig();
     dialogConfig.data= {
       action: 'Edit', data: values
     }
     dialogConfig.width="700px";
-    const dialogRef= this.dialog.open(CommentComponent, dialogConfig);
+    const dialogRef= this.dialog.open(RoomComponent, dialogConfig);
     this.router.events.subscribe(()=>{
       dialogRef.close();
 
     })
-    const sub= dialogRef.componentInstance.onEditComment.subscribe((response)=>{
+    const sub= dialogRef.componentInstance.onEditRoom.subscribe((response)=>{
       this.tableData();
     })
   }
-  handleDeleteAction(values:any){
+
+  handleDeleteAction(values: any){
     const dialogConfig= new MatDialogConfig();
         dialogConfig.data= {
-          message: 'delete' +values.name+ 'comment'
+          message: 'delete '  +values.type+  ' room'
         }
         const dialogRef= this.dialog.open(ConfirmationComponent,dialogConfig);
         const sub= dialogRef.componentInstance.onEmitStatusChange.subscribe((response)=>{
-        this.deleteProduct(values.id);
+        this.deleteRoom(values.id);
          dialogRef.close(); 
         })
   }
 
-  deleteProduct(id: any){
-    this.commentService.delete(id).subscribe((response: any)=>{
+  deleteRoom(id: any){
+    this.roomService.delete(id).subscribe((response: any)=>{
       this.tableData();
       this.responseMessage= response?.message;
-      this.snackbarService.openSnackBar(this.responseMessage,"success");
-    }, (error: any )=>{
+      this.snackbarService.openSnackBar(this.responseMessage, 'successfully deleted');
+    }, (error: any)=>{
       console.log(error);
       if(error.error?.message){
         this.responseMessage= error.error?.message;
       }
       else{
-        this.responseMessage=GlobalConstants.genericError;
+        this.responseMessage= GlobalConstants.genericError;
       }
-      this.snackbarService.openSnackBar(this.responseMessage,GlobalConstants.error);
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
     })
   }
-
- 
 
 
 }
