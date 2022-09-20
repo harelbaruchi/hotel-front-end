@@ -15,6 +15,8 @@ import { ManageHotelComponent } from './manage-hotel/manage-hotel.component';
 import { HotelComponent } from './dialog/hotel/hotel.component';
 import { ManageRoomComponent } from './manage-room/manage-room.component';
 import { RoomComponent } from './dialog/room/room.component';
+import { ManageBookingComponent } from './manage-booking/manage-booking.component';
+import { BookingComponent } from './dialog/booking/booking.component';
 
 @NgModule({
   imports: [
@@ -33,7 +35,9 @@ import { RoomComponent } from './dialog/room/room.component';
     ManageHotelComponent,
     HotelComponent,
     ManageRoomComponent,
-    RoomComponent 
+    RoomComponent,
+    ManageBookingComponent,
+    BookingComponent 
   ]
 })
 export class MaterialComponentsModule {}

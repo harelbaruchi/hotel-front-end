@@ -2,7 +2,9 @@ export class GlobalConstants{
     //Message
     public static genericError: string="something went wrong. please try again later.";
 
-    public static unauthorized: string = " you are not authorized person to access this page"
+    public static unauthorized: string = " you are not authorized person to access this page";
+
+    public static orderError: string="you are doing something wrong, please check the dates"
 
     //Regex
     public static nameRegex: string="[a-zA-Z0-9 ]*";
@@ -13,6 +15,12 @@ export class GlobalConstants{
 
     //variable
     public static error: string="error";
+
+    public static roomCount: number;
+
+    public static bookingCount: number;
+
+    public static hotelCount: number;
 
       
 

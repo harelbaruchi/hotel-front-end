@@ -1,5 +1,8 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { BookingService } from '../services/booking.service';
 import { DashboardService } from '../services/dashboard.service';
+import { HotelService } from '../services/hotel.service';
+import { RoomService } from '../services/room.service';
 import { SnackbarService } from '../services/snackbar.service';
 import { GlobalConstants } from '../shared/global-constants';
 
@@ -8,30 +11,56 @@ import { GlobalConstants } from '../shared/global-constants';
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent implements OnInit {
 	responseMessage: any;
 	data: any;
 
-	ngAfterViewInit() { }
+	ngOnInit(){
+this.dashboardData();
+}
+	
+	
 
-	constructor(private dashboardService: DashboardService, private snackbarService: SnackbarService) {
-		this.dashboardData();
+	constructor(private dashboardService: DashboardService,
+		 private snackbarService: SnackbarService,
+		 private hotelService: HotelService,
+		 private roomService: RoomService,
+		 private bookingService: BookingService) {
 	}
 
 	dashboardData(){
-this.dashboardService.getDetails().subscribe((response: any)=>{
-	console.log(response)
-	this.data=response;
-
-}, (error: any)=>{
-	console.log(error);
-	if(error.error?.message){
-		this.responseMessage=error.error?.message;
-	}
-	else{
-		this.responseMessage= GlobalConstants.genericError;
-	}
-	this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error );
-})
+		this.hotelService.getHotel().subscribe((response: any)=>{
+			let counter=0;
+			for(const obj of response){
+				if(obj.id){
+					counter++
+				}
+			}
+			GlobalConstants.hotelCount=counter;
+		})
+		this.roomService.getRoom().subscribe((response: any)=>{
+			let counter=0;
+			for(const obj of response){
+				if(obj.hotelId){
+					counter++
+				}
+			}
+			GlobalConstants.roomCount=counter;
+		})
+		this.bookingService.getBooking().subscribe((response: any)=>{
+			let counter=0;
+			for(const obj of response){
+				if(obj.roomId){
+					counter++
+				}
+			}
+			GlobalConstants.bookingCount=counter;
+		})
+ this.data={
+	room: GlobalConstants.roomCount,
+	hotel: GlobalConstants.hotelCount,
+	reservation: GlobalConstants.bookingCount
+ }
+ 	return this.data;
 }
 }
